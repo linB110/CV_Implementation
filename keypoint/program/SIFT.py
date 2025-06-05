@@ -13,7 +13,7 @@ img = cv.drawKeypoints(gray, keypoints, None, flags=cv.DRAW_MATCHES_FLAGS_DRAW_R
 cv.imwrite('SIFT.jpg', img)
 
 # show result
-cv.imshow('SIFT', img)
+cv.imshow('../image_result/SIFT', img)
 cv.waitKey(0)
 cv.destroyAllWindows()
 

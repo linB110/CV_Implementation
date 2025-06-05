@@ -16,7 +16,7 @@ kp, des = orb.compute(img, kp)
 img = cv.drawKeypoints(img, kp, None, color=(0,255,0), flags=0)
 
 # store processed img
-cv.imwrite('ORB.jpg', img)
+cv.imwrite('../image_result/ORB.jpg', img)
 
 cv.imshow('ORB', img)
 cv.waitKey(0)

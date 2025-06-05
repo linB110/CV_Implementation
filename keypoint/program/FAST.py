@@ -11,7 +11,7 @@ kp = fast.detect(img, None)
 img = cv.drawKeypoints(img, kp, None, color = (255, 0, 0))
 
 # store processed img
-cv.imwrite('FAST.jpg', img)
+cv.imwrite('../image_result/FAST.jpg', img)
 
 # show result
 cv.imshow('FAST', img)

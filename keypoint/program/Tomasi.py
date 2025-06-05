@@ -15,7 +15,7 @@ for i in corners:
 
 # store img and show result
 cv.imshow('Tomasi', img)
-cv.imwrite('Tomasi.jpg', img)
+cv.imwrite('../image_result/Tomasi.jpg', img)
 
 cv.waitKey(0)
 cv.destroyAllWindows()

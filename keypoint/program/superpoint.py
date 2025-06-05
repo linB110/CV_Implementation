@@ -1,0 +1,51 @@
+import numpy as np
+import cv2 as cv
+import random
+
+np.random.seed(42)
+random.seed(42)
+
+# read and transform image to gray
+gray = cv.imread('../image_result/box.jpg', cv.IMREAD_GRAYSCALE)
+h, w = gray.shape
+
+# construct affine transform
+def random_affine():
+    pts1 = np.float32([[0, 0], [w, 0], [0, h]])
+    perturb = np.random.normal(0, 30, (3, 2)).astype(np.float32)
+    pts2 = pts1 + perturb
+    return cv.getAffineTransform(pts1, pts2)
+
+# SIFT detector
+detector = cv.SIFT_create()
+
+# result container
+images = []
+keypoints_all = []
+colors = [(0, 0, 255), (0, 255, 0), (255, 0, 0)]  # Red, Green, Blue
+
+# detect keypoints
+for i in range(3):
+    M = random_affine()
+    warped = cv.warpAffine(gray, M, (w, h))
+    kp = detector.detect(warped, None)
+    keypoints_all.append((kp, colors[i]))
+
+    # store each detection result
+    img_kp = cv.drawKeypoints(warped, kp, None, color=colors[i],
+                              flags=cv.DRAW_MATCHES_FLAGS_DRAW_RICH_KEYPOINTS)
+    cv.imwrite(f'img_{i+1}.jpg', img_kp)
+
+# superpose keypoints to original image
+img_combined = cv.cvtColor(gray, cv.COLOR_GRAY2BGR)
+for kp_list, color in keypoints_all:
+    img_combined = cv.drawKeypoints(img_combined, kp_list, img_combined,
+                                     color=color,
+                                     flags=cv.DRAW_MATCHES_FLAGS_DRAW_RICH_KEYPOINTS)
+
+# store and show result
+cv.imwrite('../image_result/combined_keypoints.jpg', img_combined)
+cv.imshow('../image_result/Combined Keypoints', img_combined)
+cv.waitKey(0)
+cv.destroyAllWindows()
+

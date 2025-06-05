@@ -13,7 +13,7 @@ dst = cv.dilate(dst, None)
 img[dst > 0.01 * dst.max()] = [0, 0, 255]
 
 # store processed img
-cv.imwrite('Harris.jpg', img)
+cv.imwrite('../image_result/Harris.jpg', img)
 
 cv.imshow('dst', img)
 if cv.waitKey(0) & 0xff == 27:
