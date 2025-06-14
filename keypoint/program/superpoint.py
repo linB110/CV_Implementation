@@ -12,7 +12,7 @@ h, w = gray.shape
 # construct affine transform
 def random_affine():
     pts1 = np.float32([[0, 0], [w, 0], [0, h]])
-    perturb = np.random.normal(0, 30, (3, 2)).astype(np.float32)
+    perturb = np.random.normal(0, 80, (3, 2)).astype(np.float32)
     pts2 = pts1 + perturb
     return cv.getAffineTransform(pts1, pts2)
 
@@ -23,10 +23,12 @@ detector = cv.SIFT_create()
 images = []
 keypoints_all = []
 colors = [(0, 0, 255), (0, 255, 0), (255, 0, 0)]  # Red, Green, Blue
+affine_matrices = [] 
 
 # detect keypoints
 for i in range(3):
     M = random_affine()
+    affine_matrices.append(M)
     warped = cv.warpAffine(gray, M, (w, h))
     kp = detector.detect(warped, None)
     keypoints_all.append((kp, colors[i]))
@@ -38,10 +40,21 @@ for i in range(3):
 
 # superpose keypoints to original image
 img_combined = cv.cvtColor(gray, cv.COLOR_GRAY2BGR)
-for kp_list, color in keypoints_all:
-    img_combined = cv.drawKeypoints(img_combined, kp_list, img_combined,
-                                     color=color,
-                                     flags=cv.DRAW_MATCHES_FLAGS_DRAW_RICH_KEYPOINTS)
+fimg_combined = cv.cvtColor(gray, cv.COLOR_GRAY2BGR)
+
+for (kp_list, color), M in zip(keypoints_all, affine_matrices):
+    M_inv = cv.invertAffineTransform(M)
+    corrected_kp = []
+    for kp in kp_list:
+        pt = np.array([kp.pt[0], kp.pt[1], 1.0])  # Homogeneous coord
+        x, y = np.dot(M_inv, pt)
+        new_kp = cv.KeyPoint(x, y, kp.size, kp.angle, kp.response, kp.octave, kp.class_id)
+        corrected_kp.append(new_kp)
+
+    img_combined = cv.drawKeypoints(img_combined, corrected_kp, img_combined,
+                                    color=color,
+                                    flags=cv.DRAW_MATCHES_FLAGS_DRAW_RICH_KEYPOINTS)
+
 
 # store and show result
 cv.imwrite('../image_result/combined_keypoints.jpg', img_combined)
