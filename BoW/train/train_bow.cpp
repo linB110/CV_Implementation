@@ -40,7 +40,7 @@ vector<vector<Mat>> loadFeatures(const string& root_folder, const vector<string>
     struct dirent* ent;
 
     if (!dir) {
-        cerr << "❌ 無法開啟根資料夾：" << root_folder << endl;
+        cerr << "❌ can't open root folder：" << root_folder << endl;
         return all_features;
     }
 
@@ -57,7 +57,7 @@ vector<vector<Mat>> loadFeatures(const string& root_folder, const vector<string>
             continue;
 
         found_subdirs = true;
-        cout << "📂 掃描資料夾：" << subfolder << endl;
+        cout << "📂 sacn folder：" << subfolder << endl;
 
         DIR* subdir = opendir(subfolder.c_str());
         struct dirent* subent;
@@ -88,7 +88,7 @@ vector<vector<Mat>> loadFeatures(const string& root_folder, const vector<string>
     closedir(dir);
 
     if (!found_subdirs) {
-        cout << "📁 掃描圖片於：" << root_folder << endl;
+        cout << "📁 scan pic at：" << root_folder << endl;
         DIR* flat_dir = opendir(root_folder.c_str());
         if (flat_dir) {
             while ((ent = readdir(flat_dir)) != nullptr) {
@@ -115,7 +115,7 @@ vector<vector<Mat>> loadFeatures(const string& root_folder, const vector<string>
         }
     }
 
-    cout << "✅ 成功處理圖片數量: " << all_features.size() << endl;
+    cout << "✅ processed image number: " << all_features.size() << endl;
     return all_features;
 }
 
