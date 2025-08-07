@@ -3,7 +3,12 @@ This folder follows the structure of [ORB\_SLAM2](https://github.com/raulmur/ORB
 It includes a BoW (Bag of Words) training program that allows you to generate a custom vocabulary compatible with the ORB-SLAM2 system.
 You can use the trained vocabulary by simply replacing the original vocabulary file—no other modifications to ORB-SLAM2 are required.
 
-## Result 
+## 📊 Result 
+
+dataset : [EuRoC](https://projects.asl.ethz.ch/datasets/doku.php?id=kmavvisualinertialdatasets)
+
+method :  A bash script that runs each EuRoC sequence 100 times to measure RMSE (Absolute Pose Error)
+
 MH_01
 | Type                               | Voc Size | Min | Max | Mean | Std |
 | ---------------------------------- | -------- | --- | --- | ---- | --- |
