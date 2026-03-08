@@ -23,13 +23,18 @@ class ImageMetric
 
     // compute image block optimizattion weights
     std::vector<float> computeCRITICWeights(const std::vector<std::vector<float>>& scores);
-    std::vector<float> computeBlockScore(const std::vector<std::vector<float>>& scores, const std::vector<float>& wweights);
+    std::vector<float> computeBlockScore(const std::vector<std::vector<float>>& scores, const std::vector<float>& weights);
+
+    // input image
+    cv::Mat img;    
+    
+    // PCC matrix
+    std::vector<std::vector<float>> PCCMatrix;
 
     private:    
-    // input image
-    cv::Mat img;
     
     // helper functions for metric calculation and feature selection
+    std::vector<float> normalizeVector(const std::vector<float>& v);
     float computeVariance(const std::vector<float>& x);
     float computeConditionalCovariance(const std::vector<float>& x, const std::vector<float>& y);
     float computeMutualInformation(const std::vector<float>& x, const std::vector<float>& y);
