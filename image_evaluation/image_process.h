@@ -15,8 +15,26 @@ class ImageMetric
     float repetitivePattern();   // S5
     float noise();               // S6
 
-    private:
+    // metric correlation computation
+    float computePCC(const std::vector<float>& x, const std::vector<float>& y);
 
+    // feature metric selection
+    std::vector<int> metricSelection(std::vector<std::vector<float>>& metrics, float Threshold);
+
+    // compute image block optimizattion weights
+    std::vector<float> computeCRITICWeights(const std::vector<std::vector<float>>& scores);
+    std::vector<float> computeBlockScore(const std::vector<std::vector<float>>& scores, const std::vector<float>& wweights);
+
+    private:    
     // input image
     cv::Mat img;
+    
+    // helper functions for metric calculation and feature selection
+    float computeVariance(const std::vector<float>& x);
+    float computeConditionalCovariance(const std::vector<float>& x, const std::vector<float>& y);
+    float computeMutualInformation(const std::vector<float>& x, const std::vector<float>& y);
+
+    // helper functions for image feature optimization weight
+    std::vector<std::vector<float>> normalizeMetrics(const std::vector<std::vector<float>>& scores);
+    float stddev(const std::vector<float>& v);
 };
