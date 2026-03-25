@@ -8,7 +8,15 @@
 
 void ImageMetric::setImage(const cv::Mat& input_img)
 {
-    img = input_img;
+    if(input_img.channels() == 3)
+    {
+        cv::cvtColor(input_img, img, cv::COLOR_BGR2GRAY);
+    }
+        
+    else
+    {
+        img = input_img.clone();
+    }
 }
 
 // S1 score
